@@ -34,16 +34,17 @@ if __name__ == '__main__':
                     point = [0, 0, 0]
                 line += point
             lines.append(line)
+        for i in range(3):
+            pygame.draw.line(screen, [(255, 0, 0), (0, 255, 0), (0, 0, 255)][i], (250, 200),
+                             (250 + vectors[i][0] * scale, 200 + vectors[i][2] * scale), int(max((scale / 32, 1))))
         for line in lines:
             s_x, s_y, s_z, e_x, e_y, e_z = line
-            s_x, s_y, s_z = vectors[0][0] * s_x + vectors[1][0] * s_y + vectors[2][0] * s_z, \
-                            vectors[0][1] * s_x + vectors[1][1] * s_y + vectors[2][1] * s_z, \
-                            vectors[0][2] * s_x + vectors[1][2] * s_y + vectors[2][2] * s_z
-            e_x, e_y, e_z = vectors[0][0] * e_x + vectors[1][0] * e_y + vectors[2][0] * e_z, \
-                            vectors[0][1] * e_x + vectors[1][1] * e_y + vectors[2][1] * e_z, \
-                            vectors[0][2] * e_x + vectors[1][2] * e_y + vectors[2][2] * e_z
+            s_x, s_z = vectors[0][0] * s_x + vectors[1][0] * s_y + vectors[2][0] * s_z, \
+                       vectors[0][2] * s_x + vectors[1][2] * s_y + vectors[2][2] * s_z
+            e_x, e_z = vectors[0][0] * e_x + vectors[1][0] * e_y + vectors[2][0] * e_z, \
+                       vectors[0][2] * e_x + vectors[1][2] * e_y + vectors[2][2] * e_z
             pygame.draw.line(screen, (255, 255, 255), (250 + s_x * scale, 200 + s_z * scale),
-                             (250 + e_x * scale, 200 + e_z * scale), 1)
+                             (250 + e_x * scale, 200 + e_z * scale), int(max((scale / 32, 1))))
         if what_we_see[26]:
             a1 += pi / 256
         if what_we_see[22]:
@@ -61,9 +62,6 @@ if __name__ == '__main__':
             v = v[0], v[1] * cos(a1) + v[2] * sin(a1), v[2] * cos(a1) - v[1] * sin(a1)
             vectors1.append(v)
         vectors = vectors1
-        for i in range(3):
-            pygame.draw.line(screen, [(255, 0, 0), (0, 255, 0), (0, 0, 255)][i], (250, 200),
-                             (250 + vectors[i][0] * scale, 200 + vectors[i][2] * scale), 1)
 
         pygame.display.flip()
         clock.tick(fps)
