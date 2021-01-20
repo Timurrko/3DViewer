@@ -38,6 +38,7 @@ class Camera:
 
     def draw(self, screen, space):
         width, height = screen.get_size()
+        rad = ((width ** 2 + height ** 2) ** 0.5)
         points = space.get_points()
         points -= self.coords
         rotate_points = []
@@ -46,9 +47,10 @@ class Camera:
             z, y = (sum(i) for i in array([z, y]) * get_spin_matrix(-self.v_angle))
             rotate_points.append(array([x, y, z]))
         for point in rotate_points:
-            if sum(point * array([0, 1, 0])) / (sum(point ** 2) ** 0.5) >= cos(self.angle_of_view):
+            way = (sum(point ** 2) ** 0.5)
+            if sum(point * array([0, 1, 0])) / way >= cos(self.angle_of_view):
                 x, y, z = point
-                pygame.draw.circle(screen, (255, 255, 255), (int(width / 2 * (1 + x / (y * tan(self.angle_of_view)))), int(height / 2 * (1 - z / (y * tan(self.angle_of_view))))), max((1, int(15 / y))))
+                pygame.draw.circle(screen, (255, 255, 255), (int(width / 2 + rad * x / (y * tan(self.angle_of_view))), int(height / 2 - rad * z / (y * tan(self.angle_of_view)))), max((1, int(15 / way))))
 
 
 class Space:
@@ -70,7 +72,7 @@ if __name__ == '__main__':
     screen = pygame.display.set_mode((500, 400))
     print(screen.get_size())
     pygame.display.set_caption('3DEngine')
-    camera = Camera(pi / 2.5)
+    camera = Camera(pi / 1.5)
     space = Space([[i * 0.05, 1, 0] for i in range(-90, 91)])
     while running:
         screen.fill((0, 0, 0))
